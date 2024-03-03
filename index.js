@@ -1,5 +1,4 @@
-import chalk from 'chalk';
-import fs from 'fs';
+const fs = require('fs');
 
 class ColorfulLogger {
   constructor(options = {}) {
@@ -13,18 +12,20 @@ class ColorfulLogger {
 
   setColors(colors) {
     this.colors = {
-      info: colors.info || 'green',
-      warn: colors.warn || 'yellow',
-      error: colors.error || 'red',
+      info: colors.info || '\x1b[32m', // Green
+      warn: colors.warn || '\x1b[33m', // Yellow
+      error: colors.error || '\x1b[31m', // Red
+      reset: '\x1b[0m', // Reset color
     };
   }
 
   log(level, message) {
     if (this.logLevels.includes(level) && this.logLevels.indexOf(level) >= this.logLevels.indexOf(this.logLevel)) {
-      const color = this.colors[level] || 'white';
+      const color = this.colors[level] || '\x1b[37m'; // Default to white
+      const resetColor = this.colors.reset || '\x1b[0m';
       const logMessage = `[${level.toUpperCase()}] ${this.timestamps ? `[${new Date().toISOString()}] ` : ''}${message}`;
 
-      console.log(chalk[color](logMessage));
+      console.log(`${color}${logMessage}${resetColor}`);
 
       if (this.logFile) {
         this.writeToFile(logMessage);
