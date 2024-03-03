@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-const fs = require('fs');
+import fs from 'fs';
 
 class ColorfulLogger {
   constructor(options = {}) {
